@@ -1,0 +1,190 @@
+\documentclass[a4paper]{ltjsarticle}
+\usepackage{listings,jvlisting}
+
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0,
+  xleftmargin=3,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1,
+  lineskip=-0.5ex
+}
+\renewcommand{\lstlistingname}{list}
+\begin{document}
+
+\title{プログラミング技法2\_課題1}
+\author{阪田征之助}
+\maketitle
+\newpage
+\section*{課題1-1}
+\subsection*{ソースコード}
+課題1-1のソースコードの主要部をlist\ref{kadai1-1}に示す。
+
+\begin{lstlisting}[caption=kadai1-1.py,label=kadai1-1]
+    x = 1.0
+    epsilon = 0.01
+    step = epsilon**2
+    numGuesses = 0
+    # x = 1.0からx**2とaの誤差がepsilon未満となるxをstep = 0.0001ごとに総当たりで調べる
+    while abs(x**2 - a)>=epsilon:
+        if x > a:
+            x -= step
+        else:
+            x += step
+        numGuesses += 1
+\end{lstlisting}
+
+\\サンプルプログラムからの変更点は、
+
+\begin{itemize}
+    \item 入力部分のintをfloatに
+    \item 初期値を1に
+\end{itemize}
+の二点である。
+
+\subsection*{出力結果}
+課題1-1の出力結果をlist\ref{result1}に示す。
+\\一回目の実行では5を入力した結果、二回目の実行では0.25を入力した結果を示している。
+\begin{lstlisting}[caption=output, label=result1]
+numGuesses =  12339
+2.2339000000003835  is close to square root of  5.0
+numGuesses =  4901
+0.509900000000054  is close to square root of  0.25
+\end{lstlisting}
+5の平方根の真値は、2.2360679、0.25の平方根の真値は、0.500であるため、どちらも正しく出力されていることがわかる。
+
+\subsection*{工夫した箇所}
+平方根は1より大きければ元の数より小さく、1より小さければ元の数より大きくなるという性質がある。
+そのため初期値を1とすることで、入力された数に応じて数を増減させるだけで目的の値を得ることができる。
+\newpage
+
+\section*{課題1-2}
+\subsection*{ソースコード}
+課題1-2のソースコードの主要部をlist\ref{kadai1-2}に示す。
+\begin{lstlisting}[caption=kadai1-2.py,label=kadai1-2]
+    x = 1.0
+    epsilon = 0.01
+    step = abs(a-x)
+    numGuesses = 0
+    # x = 1.0 を中心に誤差がepsilon以下になるように二分探査する。
+    while abs(x**2 - a)>=epsilon:
+        step /= 2
+        if x**2 > a:
+            x -= step
+        else:
+            x += step
+        numGuesses += 1
+\end{lstlisting}
+stepをループごとに半分にし、xが入力aより大きければxからstepを引き、xが入力aより小さければ、xにstepを足す操作を繰り返す。
+\\そして、誤差がepsilon以下になればループを抜け出し結果を出力する。
+
+\subsection*{出力結果}
+課題1-2の出力結果をlist\ref{result2}に示す。
+\\一回目の実行では5を入力した結果、二回目の実行では0.25を入力した結果を示している。
+\begin{lstlisting}[caption=output, label=result2]
+numGuesses =  8
+2.234375  is close to square root of  5.0
+numGuesses =  5
+0.5078125  is close to square root of  0.25
+\end{lstlisting}
+どちらも正しく出力されていることがわかる。計算回数は大幅に減ったことがわかる。
+\newpage
+
+\section*{課題1-3}
+\subsection*{ソースコード}
+課題1-3のソースコードの主要部をlist\ref{kadai1-3}に示す。
+\begin{lstlisting}[caption=kadai1-3.py,label=kadai1-3]
+    x = 1.0
+    epsilon = 0.01
+    numGuesses = 0
+    # x = 1.0 を中心に誤差がepsilon以下になるようにニュートン法で探査する。
+    while abs(x**2 - a)>=epsilon:
+        func_x = x**2 - a
+        funcd_x = 2*x
+        x = x - func_x / funcd_x
+        numGuesses += 1
+\end{lstlisting}
+ニュートン法の定義式をそのまま記述した。微分値の取得は、導関数を用意し代入するという形をとっている。
+
+\subsection*{出力結果}
+課題1-3の出力結果をlist\ref{result3}に示す。
+\\一回目の実行では5を入力した結果、二回目の実行では0.25を入力した結果を示している。
+\begin{lstlisting}[caption=output, label=result3]
+numGuesses =  3
+2.238095238095238  is close to square root of  5.0
+numGuesses =  3
+0.5001524390243902  is close to square root of  0.25
+\end{lstlisting}
+どちらも正しく出力されていることがわかる。計算回数は二分法よりも小さくなった。
+
+\subsection*{工夫した箇所}
+微分値の取得は、原子関数にxと微小数足したx+dxを代入した値の引き算で取得する方法がある。
+\\今回は導関数が簡単であったため、導関数にxを代入するという手法をとっている。
+\newpage
+
+\section*{課題1-4}
+\subsection*{ソースコード}
+課題1-4のソースコードをlist\ref{kadai1-4}に示す。
+\begin{lstlisting}[caption=kadai1-4.py,label=kadai1-4]
+    import sqrt
+
+    a = float(input("Please a positive integer: "))
+    sqrt.get_sqrt_by_nomal(a)
+    sqrt.get_sqrt_by_bi(a)
+    sqrt.get_sqrt_by_newton(a)
+\end{lstlisting}
+またモジュール作成用のソースコードをlist\ref{sqrt}に示す。
+\begin{lstlisting}[caption=sqrt.py,label=sqrt]
+def get_sqrt_by_nomal(a):
+
+    # x = 1.0からx**2とaの誤差がepsilon未満となるxをstep = 0.0001ごとに総当たりで調べる
+
+
+def get_sqrt_by_bi(a):
+
+    # x = 1.0 を中心に誤差がepsilon以下になるように二分探査する。
+
+def get_sqrt_by_newton(a):
+
+    # x = 1.0 を中心に誤差がepsilon以下になるようニュートン法で探査する。
+
+
+def main():
+    a = float(input("Please a positive integer: "))
+    get_sqrt_by_nomal(a)
+    get_sqrt_by_bi(a)
+    get_sqrt_by_newton(a)
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+\newpage
+
+\subsection*{出力結果}
+課題1-4の出力結果をlist\ref{result4}に示す。
+\begin{lstlisting}[caption=output, label=result4]
+PS C:\Users\r1173\python\ou-pro_tech2\kadai1> python kadai1-4.py
+Please a positive integer: 5
+numGuesses =  12339
+2.2339000000003835  is close to square root of  5.0
+numGuesses =  8
+2.234375  is close to square root of  5.0
+numGuesses =  3
+2.238095238095238  is close to square root of  5.0
+PS C:\Users\r1173\python\ou-pro_tech2\kadai1>
+\end{lstlisting}
+
+\subsection*{工夫した箇所}
+もともとモジュール作成用ファイルの名前をkadai1-4.pyとしていたが、どうやらimportの際にハイフンが認識できないことがわかった。
+そのため、急遽sqrt.pyという名前に変更した。
+\end{document}
