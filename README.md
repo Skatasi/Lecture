@@ -1,6 +1,6 @@
 # Lecture
-codes made in calss
-# Lecture
-# Lecture
-# Lecture
-# Lecture
+codes made in class
+
+```
+git clone https://github.com/Skatasi/Lecture.git
+```
