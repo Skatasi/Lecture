@@ -7,7 +7,7 @@ import cv2 as cv
 
 img = cv.imread('./image00.png', 0)    # Read out as a gray scale image
 img = img.astype(float)
-# f+f*g
+# f + f * g
 g = np.array([[0, -1, 0],
               [-1, 5, -1],
               [0, -1, 0]], float)
